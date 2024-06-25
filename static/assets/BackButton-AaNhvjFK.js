@@ -1,0 +1,1 @@
+import{Q as s,j as o}from"./index-B-wAYjFk.js";import{s as e}from"./index-CVf2sffD.js";import{I as a}from"./chunk-6QYXN73V-XiCQhsve.js";const i=()=>{const t=s(),r=()=>t(-1);return o.jsx(a,{bg:"purple.600",color:"white",size:"md",rounded:"lg",_hover:{bg:"purple.800",color:"white"},icon:o.jsx(e,{size:24}),onClick:r,"aria-label":"الرجوع"})},u=i;export{u as B};
