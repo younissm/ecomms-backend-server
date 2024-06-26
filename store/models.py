@@ -9,7 +9,7 @@ class Category(models.Model):
     class Meta:
             ordering = ['name']
             indexes = [
-                models.Index(fields=['name']),
+                models.Index(fields=['id', 'name']),
             ]
             verbose_name = 'category'
             verbose_name_plural = 'categories'
@@ -17,7 +17,7 @@ class Category(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('store:product_list_by_category', args=[self.slug])
+        return reverse('store:product_list_by_category', args=[self.id, self.slug])
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -42,4 +42,4 @@ class Product(models.Model):
                 models.Index(fields=['id', 'slug']),
             ]
     def get_absolute_url(self):
-        return reverse('store:product_detail', args=[self.slug])
+        return reverse('store:product_detail', args=[self.id, self.slug])
