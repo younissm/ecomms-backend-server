@@ -1,16 +1,12 @@
+#store/urls.py
 from django.urls import path
-from . import views
-app_name = 'store'
+from .views import ProductListCreateView, ProductDetailView, CategoryListCreateView, CategoryDetail
+
 urlpatterns = [
-    path('', views.product_list, name='product_list'),
-    path(
-        '<int:id><slug:category_slug>/',
-        views.product_list,
-        name='product_list_by_category'
-    ),
-    path(
-        '<int:id>/<slug:slug>/',
-        views.product_detail,
-        name='product_detail'
-    ),
+    path('products/', ProductListCreateView.as_view(), name='product-list-create'),
+    path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
+    path('categories/', CategoryListCreateView.as_view(), name='category-list-create'),
+    path('categories/<int:pk>', CategoryDetail.as_view(), name='category-detail'),
+
+
 ]

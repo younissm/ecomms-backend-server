@@ -1,31 +1,33 @@
+#models.py
 from django.db import models
 from django.urls import reverse
 # Create your models here.
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=200)
+    title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     class Meta:
-            ordering = ['name']
-            indexes = [
-                models.Index(fields=['id', 'name']),
-            ]
-            verbose_name = 'category'
-            verbose_name_plural = 'categories'
+        ordering = ['title']
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
+
     def __str__(self):
-        return self.name
-    
+        return self.title
+
     def get_absolute_url(self):
-        return reverse('store:product_list_by_category', args=[self.id, self.slug])
+        return reverse('store:category-detail', args=[self.id])
+
+
+
 
 class Product(models.Model):
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    body = models.TextField(blank=True)
+    description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    available = models.BooleanField(default=True)
+    stock = models.IntegerField(default=1)
     category = models.ForeignKey(
         Category,
         related_name='products',
@@ -36,10 +38,9 @@ class Product(models.Model):
         upload_to='products/%Y/%m/%d',
         blank=True
     )
+
     class Meta:
-            ordering = ['name']
-            indexes = [
-                models.Index(fields=['id', 'slug']),
-            ]
+        ordering = ['title']
+
     def get_absolute_url(self):
-        return reverse('store:product_detail', args=[self.id, self.slug])
+        return reverse('store:product-detail', args=[self.id, self.slug])

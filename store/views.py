@@ -1,39 +1,49 @@
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework import authentication, permissions
-# from .models import Product
+#store/views.py
 
-# class ListProducts(APIView):
-#     authentication_classes = [authentication.TokenAuthentication]
-#     permission_classes = [permissions.IsAdminUser]
+from django.shortcuts import render, get_object_or_404
+from .models import Product, Category
+from rest_framework import generics
+from .serializers import ProductSerializer, CategorySerializer
+from rest_framework.permissions import AllowAny
+
+
+
+class ProductListCreateView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = ProductSerializer
     
-#     def get(self, request, format=None):
-#         products = [user.username for user in Product.objects.all()]
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        category_id = self.request.query_params.get('category_id')
+        print(f"Received category_id: {category_id}")  # Debugging line
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+            print(f"Filtered queryset: {queryset}")  # Debugging line
+        return queryset
+
+class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [AllowAny]
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
-from django.shortcuts import get_object_or_404, render
-from .models import Category, Product
+class CategoryListCreateView(generics.ListCreateAPIView):
+    serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        category_id = self.request.query_params.get('category_id')
+        print(f"Received category_id: {category_id}")  # Debugging line
+        if category_id:
+            queryset = queryset.filter(product__category=category_id)
+            print(f"Filtered queryset: {queryset}")  # Debugging line
+        return queryset
 
 
-def product_list(request, category_slug=None):
-    category = None
-    categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
-    return render(
-    request,
-    'store/product/list.html', {
-        'category': category,
-        'categories': categories,
-        'products': products
-    }
-)
     
-    
-def product_detail(request, id, slug):
-    product = get_object_or_404(
-        Product, id=id, slug=slug, available=True
-    )
-    return render(request, 'store/product/detail.html', {'product': product})
+
+
+class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [AllowAny]
+    queryset = Product.objects.all()
+    serializer_class = CategorySerializer

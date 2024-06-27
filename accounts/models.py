@@ -5,4 +5,5 @@ from django.db import models
 from django.utils import timezone
 
 class CustomUser(AbstractUser):
-    pass
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=True)
