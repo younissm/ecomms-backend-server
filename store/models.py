@@ -7,7 +7,6 @@ User = get_user_model()
 
 class Category(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
     class Meta:
         ordering = ['title']
         verbose_name = 'category'
@@ -34,12 +33,12 @@ class Product(models.Model):
         related_name='products',
         on_delete=models.CASCADE
     )
-    slug = models.SlugField(max_length=200)
-    image = models.ImageField(
+    thumbnail = models.ImageField(
         upload_to='products/%Y/%m/%d',
         blank=True
     )
 
+    discountPercentage = models.IntegerField(default=0)
     class Meta:
         ordering = ['title']
 
