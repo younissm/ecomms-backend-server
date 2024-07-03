@@ -150,10 +150,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Static root directory
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-LOGIN_REDIRECT_URL = "home"  # new
-LOGOUT_REDIRECT_URL = "home"  # new
-
-
 # SIMPLE_JWT = {
 #     "AUTH_HEADER_TYPES": ("Bearer",),
 #     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),

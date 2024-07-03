@@ -13,16 +13,17 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'password', 'first_name', 'last_name', 'createdAt', 'updatedAt')
 
     def validate(self, attrs):
-        #if attrs['password'] != attrs['password_confirm']:
-            #raise serializers.ValidationError({"password": "Password fields didn't match."})
+        if attrs['password'] != attrs['password_confirm']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
         return attrs
 
     def create(self, validated_data):
-        #validated_data.pop('password_confirm')
+        validated_data.pop('password_confirm')
         user = User.objects.create(
             username=validated_data['username'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
+            ## Rest of the fields
         )
         user.set_password(validated_data['password'])
         user.save()
