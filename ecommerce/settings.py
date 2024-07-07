@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'pages',
     'store',
+    'testapi',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,7 @@ DATABASES = {
 #        "ENGINE": "django.db.backends.postgresql",
 #        "NAME": "postgres",
 #        "USER": "postgres",
-#        "PASSWORD": "testpass123",
+#        "PASSWORD": "postgres",
 #        "HOST": "localhost",
 #        "PORT": 5432,
 #    }

@@ -14,13 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/auth/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/users/', include('accounts.urls')),
-   
-   path('', include('pages.urls')),
-    path('api/', include('store.urls')),
-
+    path('api/', include('testapi.urls')),
 ]
 
 

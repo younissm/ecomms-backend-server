@@ -7,6 +7,7 @@ User = get_user_model()
 
 class Category(models.Model):
     title = models.CharField(max_length=200)
+    thumbnail = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     class Meta:
         ordering = ['title']
         verbose_name = 'category'
