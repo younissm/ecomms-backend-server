@@ -1,4 +1,3 @@
-#models.py
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -16,8 +15,6 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse('store:category-detail', args=[self.id])
 
 
 
@@ -43,8 +40,6 @@ class Product(models.Model):
     class Meta:
         ordering = ['title']
 
-    def get_absolute_url(self):
-        return reverse('store:product-detail', args=[self.id])
 
 
 class Review(models.Model):
@@ -52,10 +47,22 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rating = models.IntegerField()
     comment = models.TextField()
-    createdAt = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.user.username} - {self.product.name} - {self.rating}'
 
     
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)

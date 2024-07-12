@@ -1,5 +1,9 @@
 from urllib import request
 
+
+from rest_framework.renderers import JSONRenderer
+from django.http import Http404
+
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from store.models import Category, Product, Review
@@ -123,10 +127,12 @@ class ProductListCreateView(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(queryset)
+        json = JSONRenderer().render(serializer.data)
+        print(json)
         return Response({
             "data": {
-                    "products": serializer.data
+                    "product": serializer.data
             }
         }
     )
@@ -144,10 +150,12 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([AllowAny])
 def getProductByCategory(request, category_title):
     products = Product.objects.filter(category__title=category_title)
-    print(products)
-    serializer = CategorySerializer(products, many=True)
-    return Response(serializer.data)
-
+    if products:
+        print(products)
+        serializer = CategorySerializer(products, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status.HTTP_204_NO_CONTENT)
 
 
 class CategoryListCreateView(generics.ListCreateAPIView):
@@ -177,7 +185,7 @@ class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
         serializer = CategorySerializer(instance)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return isValid
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
