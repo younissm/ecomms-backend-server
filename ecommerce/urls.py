@@ -14,12 +14,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/', include('testapi.urls')),
+    path("api/users/", include('accounts.urls'))
+    path('api/', include('store.urls')),
 ]
 
 
 
 if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += path('', include('pages.urls')),

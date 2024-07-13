@@ -35,7 +35,7 @@ class Product(models.Model):
         upload_to='products/%Y/%m/%d',
         blank=True
     )
-
+    ratingsAverage = models.IntegerField(default=0)
     discountPercentage = models.IntegerField(default=0)
     class Meta:
         ordering = ['title']

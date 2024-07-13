@@ -149,7 +149,6 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Static root directory
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # SIMPLE_JWT = {
 #     "AUTH_HEADER_TYPES": ("Bearer",),
@@ -195,6 +194,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ),
 }
 
@@ -205,7 +205,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
-
+AUTHENTICATION_BACKENDS = ['accounts.authentication.EmailBackend']
 
 
 # For Error Handling
