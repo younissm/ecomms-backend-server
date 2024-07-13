@@ -4,20 +4,20 @@ from .models import CustomUser
 
 class CustomUserAdmin(BaseUserAdmin):
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('username',)}),
+        (None, {'fields': ('email', 'password', 'username')}),
+        ('Personal info', {'fields': ('name', 'image')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login',)}),
+        ('Important dates', {'fields': ('createdAt, updatedAt',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'username', 'password1', 'password2'),
+            'fields': ('email', 'name', 'password1', 'password2'),
         }),
     )
-    list_display = ('email', 'username', 'is_staff', 'is_active')
+    list_display = ('email', 'name', 'is_staff', 'is_active')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    search_fields = ('email', 'username')
+    search_fields = ('email', 'name')
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions')
 

@@ -74,19 +74,22 @@
 #             raise PermissionDenied("You do not have permission to delete this review.")
 #         instance.delete()
 
+
 from rest_framework import status, generics
 from rest_framework.decorators import api_view, permission_classes
-from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, SAFE_METHODS, IsAuthenticated
-from models import Product, Category, Review
+from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
+
+
+from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
+from .models import Product, Category, Review
+
 # Product views
 class ProductListCreateView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]
@@ -96,21 +99,20 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def getProductByCategory(request, pk):
-    products = Product.objects.filter(category=pk)
-    if products:
+    products = Product.objects.filter(category__id=pk)  # Fixed filter query
+    if products.exists():  # Check if queryset has any products
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-class CategoryProductListView(generics.ListAPIView):
-    serializer_class = ProductSerializer
-    permission_classes = [AllowAny]
-
-    def get_queryset(self):
-        category_title = self.kwargs['category_title']
-        category = get_object_or_404(Category, title=category_title)
-        return Product.objects.filter(category=category)
+# class CategoryProductListView(generics.ListAPIView):
+#     serializer_class = ProductSerializer
+#     permission_classes = [AllowAny]
+#
+#     def get_queryset(self):
+#         category_title = self.kwargs['category_title']
+#         category = get_object_or_404(Category, title=category_title)
+#         return Product.objects.filter(category=category)
 
 # Category views
 class CategoryListCreateView(generics.ListCreateAPIView):

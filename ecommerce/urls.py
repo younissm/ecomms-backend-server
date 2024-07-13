@@ -14,7 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/users/", include('accounts.urls'))
+    path("api/users/", include('accounts.urls')),
     path('api/', include('store.urls')),
 ]
 

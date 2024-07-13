@@ -19,7 +19,6 @@ class CustomUser(AbstractUser):
         upload_to=user_directory_path,
         blank=True
     )
-
     updatedAt = models.DateTimeField(auto_now=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']

@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'accounts',
     'pages',
     'store',
-    'testapi',
 ]
 
 MIDDLEWARE = [

@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django.http import Http404
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_exempt
 
 User = get_user_model()
 
